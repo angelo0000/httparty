@@ -23,6 +23,8 @@ module HTTParty
             method = <<-EOM
               def self.#{inheritable_attribute}
                 #{ivar} = superclass.#{inheritable_attribute}.merge Marshal.load(Marshal.dump(#{ivar}))
+              rescue TypeError
+                #{ivar} = superclass.#{inheritable_attribute}.merge #{ivar}
               end
             EOM
             subclass.class_eval method
